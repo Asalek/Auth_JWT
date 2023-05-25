@@ -1,8 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe({ // to use class validator globaly every where
+		whitelist: true, //get only the values that are in the AuthDto not id, time, ...
+		//try to comment it and send id field
+	}
+  ));
   await app.listen(3000);
 }
 bootstrap();

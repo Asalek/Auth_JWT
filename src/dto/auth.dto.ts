@@ -1,7 +1,7 @@
 
 
-export interface AuthDto
+export class AuthDto
 {
-    email: String,
-    password: String
+    email: String;
+    password: String;
 }

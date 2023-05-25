@@ -19,3 +19,6 @@ bootstrap();
 	//npx prisma migrate dev	//generate mysql and schemas
 	//npx prisma studio			// see database collections
 
+//Class validator
+	//npm i class-validator class-transformer
+

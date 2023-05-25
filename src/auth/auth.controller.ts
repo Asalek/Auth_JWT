@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req } from "@nestjs/common";
+import { Body, Controller, Post } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "src/dto";
 // import { Request } from "express";
@@ -22,9 +22,9 @@ export class AuthController
 	//any we don't know the incoming data types
 
 	@Post('signup')
-	signup(@Body() dto : AuthDto) //AuthDto a object (email,pass)	
+	signup(@Body() dto : AuthDto) //AuthDto a object (email,pass) used so you can access to email and pass
 	{
-		console.log( dto );
+		console.log( dto.email );
 		return this.service.signup();
 	}
 }

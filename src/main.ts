@@ -24,7 +24,10 @@ bootstrap();
 	//npx prisma --help
 	//npx prisma migrate dev	//generate mysql and schemas
 	//npx prisma studio			// see database collections
+	//npx prisma format			//declare a model object to use relations
 
 //Class validator
 	//npm i class-validator class-transformer
 
+//Argon Hash
+	//npm i argon2

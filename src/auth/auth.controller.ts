@@ -24,7 +24,6 @@ export class AuthController
 	@Post('signup')
 	signup(@Body() dto : AuthDto) //AuthDto a object (email,pass) used so you can access to email and pass
 	{
-		console.log( dto );
-		return this.service.signup();
+		return this.service.signup(dto);
 	}
 }

@@ -11,22 +11,29 @@ datasource db {
 }
 
 model User {
-	id Int @id @default(autoincrement())
-	createdAt DateTime @default(now())
-	updatedAt DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-	email String
-	hashed_PASSWD String
-	fname String?		//? optional
-	lname String?
+  email         String     @unique
+  hashed_PASSWD String
+  fname         String? //? optional
+  lname         String?
+  BookMark      BookMark[]
+
+  @@map("asalek")
 }
 
 model BookMark {
-	id Int @id @default(autoincrement())
-	createdAt DateTime @default(now())
-	updatedAt DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-	title String
-	description String?
-	link String
+  title       String
+  description String?
+  link        String
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+  @@map("priiiiiiz")
 }

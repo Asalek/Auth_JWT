@@ -21,7 +21,7 @@ model User {
   lname         String?
   BookMark      BookMark[]
 
-  @@map("asalek")
+  @@map("asalek") // table/collection name
 }
 
 model BookMark {

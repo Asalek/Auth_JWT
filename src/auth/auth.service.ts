@@ -1,16 +1,23 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { User, BookMark } from "@prisma/client"; //the User schema
-import { AuthDto } from "src/dto";
+import { AuthDto } from "src/auth/dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import * as argon from 'argon2'
 import { isInstance } from "class-validator";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
+import { JwtService } from "@nestjs/jwt";
+import { ConfigService } from "@nestjs/config";
+import { promises } from "dns";
 
 @Injectable()
 export class AuthService
 {
-	constructor (private prism : PrismaService)
+	constructor (private prism : PrismaService,
+		private jwt: JwtService,
+		private config : ConfigService
+		)
 	{}
+
 	async signup(dto : AuthDto)
 	{
 		//generate the password
@@ -31,10 +38,11 @@ export class AuthService
 				// 	lname: true
 				// }
 			});
-			//  *2 				or simply delete the user 
-			delete user__.hashed_PASSWD;
+			//  *2 				or simply delete the user password
+			// delete user__.hashed_PASSWD;
 			//return the saved user hashed_PASSWD and return it :
-			return user__;
+			
+			return this.signToken(user__.id, user__.email);
 		}
 		catch (error)
 		{
@@ -45,6 +53,7 @@ export class AuthService
 			// throw error;
 		}
 	}
+
 	async signin(dto : AuthDto)
 	{
 		//find the user by email
@@ -64,8 +73,21 @@ export class AuthService
 		//if password incorrect throw error
 		if (!pwMatch)
 			throw new ForbiddenException('Password incorrect');
-		//send back the user
-		delete user_to_find.hashed_PASSWD;
-		return user_to_find;
+		//send back the user	
+		return this.signToken(user_to_find.id, user_to_find.email);
+	}
+
+	//why we returned a string cz JWT return a string token || or return an objectt
+	signToken(userId:number, email:string): Promise<string> //the return typr is string
+	{
+		let payload = {
+			id: userId,
+			email //similar to this.email=email
+		};
+		const secret:string = this.config.get("JWT_SECRET");
+		return this.jwt.signAsync(payload, {
+			expiresIn: "15m", //in 15 minute the token will expired and user must sign in again
+			secret: secret
+		});
 	}
 }

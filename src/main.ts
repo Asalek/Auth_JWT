@@ -31,3 +31,11 @@ bootstrap();
 
 //Argon Hash
 	//npm i argon2
+
+//config module
+	//npm i @nestjs/config
+
+//passports
+	//npm i @nestjs/passport passport
+	//npm i @nestjs/jwt passport-jwt
+	//npm i --save-dev @types/passport-jwt		///save it as development dependencies

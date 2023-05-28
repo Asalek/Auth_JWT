@@ -39,13 +39,33 @@ export class AuthService
 		catch (error)
 		{
 			if (error instanceof PrismaClientKnownRequestError)
-				if (error.code === 'P2002')// this error code of duplicated fieled (already used)
+				if (error.code === "P2002")// this error code of duplicated fieled (already used)
 					throw new ForbiddenException('email already in use');
-			throw error;
+			throw new ForbiddenException('unkonwn error');
+			// throw error;
 		}
 	}
-	signin()
+	async signin(dto : AuthDto)
 	{
-		return {a:"sign In"}
+		//find the user by email
+		let user_to_find = await this.prism.user.findUnique({
+			where:{
+				email: dto.email.toString(),
+			}
+		});
+		//if user doesn't exist throw exception
+		if (!user_to_find)
+			throw new ForbiddenException('no such user',);
+		//compare password
+		let pwMatch = await argon.verify(
+			user_to_find.hashed_PASSWD,
+			dto.password.toString(),
+		);
+		//if password incorrect throw error
+		if (!pwMatch)
+			throw new ForbiddenException('Password incorrect');
+		//send back the user
+		delete user_to_find.hashed_PASSWD;
+		return user_to_find;
 	}
 }

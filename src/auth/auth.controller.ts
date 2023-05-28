@@ -11,8 +11,8 @@ export class AuthController
 	}
 	//localhost:3000/auth/signin
 	@Post('signin')
-	signin(){
-		return this.service.signin();
+	signin(@Body() dto : AuthDto){
+		return this.service.signin(dto);
 	}
 
 	//(@Req() req: Request) //uses req, res in expressJS to get the body content

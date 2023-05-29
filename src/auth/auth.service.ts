@@ -78,14 +78,14 @@ export class AuthService
 	}
 
 	//why we returned a string cz JWT return a string token || or return an objectt
-	signToken(userId:number, email:string): Promise<string> //the return typr is string
+	async signToken(userId:number, email:string): Promise<string> //the return typr is string
 	{
 		let payload = {
 			id: userId,
 			email //similar to this.email=email
 		};
 		const secret:string = this.config.get("JWT_SECRET");
-		return this.jwt.signAsync(payload, {
+		return await this.jwt.signAsync(payload, {
 			expiresIn: "15m", //in 15 minute the token will expired and user must sign in again
 			secret: secret
 		});

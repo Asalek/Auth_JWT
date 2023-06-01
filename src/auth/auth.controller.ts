@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpStatus, Patch, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "src/auth/dto";
 import { AuthGuard } from "@nestjs/passport";
@@ -13,6 +13,7 @@ export class AuthController
 	}
 	
 	//localhost:3000/auth/signin
+	@HttpCode(HttpStatus.OK)//return 200 on success
 	@Post('signin')
 	signin(@Body() dto : AuthDto){
 		return this.service.signin(dto);
@@ -34,6 +35,11 @@ export class AuthController
 	@Get('me')
 	getMe(@Req() req:Request)
 	{
-		return req.user;
+		// return req.user['id']; return only id
+		return req.user['id'];
 	}
+
+	@Patch()
+	editUser()
+	{}
 }

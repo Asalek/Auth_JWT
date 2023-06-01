@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Res, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "src/auth/dto";
 import { AuthGuard } from "@nestjs/passport";
@@ -30,10 +30,10 @@ export class AuthController
 		return this.service.signup(dto);
 	}
 
-	@UseGuards(AuthGuard('jwt'))
+	@UseGuards(AuthGuard('jwt'))	// protect the /me route, if jwt strategy is correct allow call validate in JwtStrategy class
 	@Get('me')
-	getMe()
+	getMe(@Req() req:Request)
 	{
-		return "hello there i'm me";
+		return req.user;
 	}
 }

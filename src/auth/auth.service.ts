@@ -44,8 +44,8 @@ export class AuthService
 		}
 		catch (error)
 		{
-			if (error instanceof PrismaClientKnownRequestError)
-				if (error.code === "P2002")// this error code of duplicated fieled (already used)
+			// if (error instanceof PrismaClientKnownRequestError)
+			if (error.code === "P2002")// this error code of duplicated fieled (already used)
 					throw new ForbiddenException('email already in use');
 			throw new ForbiddenException('unkonwn error');
 			// throw error;
@@ -91,3 +91,7 @@ export class AuthService
 		return {token: access_token,}
 	}
 }
+
+//Passport
+//AuthGuard ==> CanActivate
+//Serlizer ==> PassportSerilizer
